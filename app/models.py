@@ -8,16 +8,15 @@ class Song(Model):
     likes = IntegerField()
     dislikes = IntegerField()
     description = StringField()
-    Happy = BooleanField()
-    Sad = BooleanField()
-    Angry = BooleanField()
-    Love = BooleanField()
-    Calm = BooleanField()
-    Energetic = BooleanField()
+    Happy = BooleanField(default=False)
+    Sad = BooleanField(default=False)
+    Angry = BooleanField(default=False)
+    Love = BooleanField(default=False)
+    Calm = BooleanField(default=False)
+    Energetic = BooleanField(default=False)
 
     # spotify_streams = IntegerField()
     # description = StringField()
-
 
 
     def json_response(self):
@@ -48,6 +47,15 @@ class Song(Model):
 
     def change_description(self, new_description):
         self.description = new_description
+        self.save()
+
+    def change_mood(self, new_Happy, new_Sad, new_Angry, new_Love, new_Calm, new_Energetic):
+        self.Happy = new_Happy
+        self.Sad = new_Sad
+        self.Angry = new_Angry
+        self.Love = new_Love
+        self.Calm = new_Calm
+        self.Energetic = new_Energetic
         self.save()
 
  
