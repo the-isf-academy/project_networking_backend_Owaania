@@ -36,6 +36,17 @@ class Song(Model):
             'Energetic':self.Energetic
             # 'streams': self.spotify_streams, 
         }
+    
+    def leaderboard(self):
+
+        return {
+            'id': self.id,
+            'title': self.title,
+            'artist':self.artist,
+            'likes':self.likes,
+            'dislikes': self.dislikes,
+            'description':self.description
+        }
 
     def increase_likes(self):
         self.likes += 1
@@ -50,12 +61,14 @@ class Song(Model):
         self.save()
 
     def change_mood(self, new_Happy, new_Sad, new_Angry, new_Love, new_Calm, new_Energetic):
+
         self.Happy = new_Happy
         self.Sad = new_Sad
         self.Angry = new_Angry
         self.Love = new_Love
         self.Calm = new_Calm
         self.Energetic = new_Energetic
+        
         self.save()
 
  

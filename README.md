@@ -38,7 +38,7 @@ In the API, users can add their own song recommendations, "like" other users son
 
 Here's what is included:
 - `\app`
-    - `models.py` - `Fortune` model
+    - `models.py` - `Song` model
     - `views.py` - endpoints
 - `database.sqlite`  
 - `README.md` 

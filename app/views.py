@@ -27,7 +27,7 @@ def new_song(args):
 @route_get(BASE_URL + 'all')
 def all_songs(args):
     song_list = []
-
+    
     for song in Song.objects.all():
         song_list.append(song.json_response())
 
@@ -40,12 +40,17 @@ def add_like(args):
         add_likes.increase_likes()
         return {'Recommendations' : add_likes.json_response()}
     
+    else:
+        return {'Error':'Song ID not found!'}
+    
 @route_post(BASE_URL + 'dislike', args={'id': int})
 def add_dislike(args):
     if Song.objects.filter(id=args['id']).exists():
         add_dislike = Song.objects.get(id=args['id']) 
         add_dislike.increase_dislikes()
         return {'Recommendations' : add_dislike.json_response()}
+    else:
+        return {'Error':'Song ID not found!'}
     
 @route_post(BASE_URL + 'change_description', args={'id': int,'new_description':str})
 def description(args):
@@ -54,19 +59,22 @@ def description(args):
         new_description.change_description(args['new_description'])
         return {'Recommendations' : new_description.json_response()}
     
- @route_post(BASE_URL + 'change_mood', args={'id': int,'Happy':bool, 'Sad':bool, 'Angry':bool, 'Love':bool, 'Calm':bool, 'Energetic':bool})
- def description(args):
-     if Song.objects.filter(id=args['id']).exists():
-        new_Happy = Song.objects.get(id=args['id'])
-        new_Happy.change_mood(args['Happy'])
-        new_Sad = Song.objects.get(id=args['id'])
-        new_Sad.change_mood(args['Sad'])
-        new_Angry = Song.objects.get(id=args['id'])
-        new_Angry.change_mood(args['Angry'])
-        new_Love = Song.objects.get(id=args['id'])
-        new_Love.change_mood(args['Love'])
-        new_Calm = Song.objects.get(id=args['id'])
-        new_Calm.change_mood(args['Calm'])
-        new_Energetic = Song.objects.get(id=args['id'])
-        new_Energetic.change_mood(args['Energetic'])
-        return {'Recommendations' : new_Happy.json_response()}
+    else:
+        return {'Error':'Song ID not found!'}
+    
+@route_post(BASE_URL + 'change_mood', args={'id': int,'Happy':bool, 'Sad':bool, 'Angry':bool, 'Love':bool, 'Calm':bool, 'Energetic':bool})
+def change_mood(args):
+    if Song.objects.filter(id=args['id']).exists():
+        new_mood = Song.objects.get(id=args['id'])
+        new_mood.change_mood(args['Happy'],args['Sad'],args['Angry'],args['Love'],args['Calm'],args['Energetic'])
+        return {'Recommendations' : new_mood.json_response()}
+    
+@route_get(BASE_URL + 'leaderboard')
+def leaderboard(args):
+    like_leaderboard = Song.objects.order_by('-likes')
+
+    if like_leaderboard.exists():
+        leaderboard_list = [song.leaderboard() for song in like_leaderboard]
+        return {'Leaderboard': leaderboard_list}
+    else:
+        return {'Error': 'No songs with likes!'}
