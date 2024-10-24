@@ -1,7 +1,7 @@
 # models.py
 
 from banjo.models import Model, StringField, IntegerField, BooleanField
-
+#These are the models of a song
 class Song(Model):
     title = StringField()
     artist = StringField()
@@ -15,10 +15,8 @@ class Song(Model):
     Calm = BooleanField(default=False)
     Energetic = BooleanField(default=False)
 
-    # spotify_streams = IntegerField()
-    # description = StringField()
 
-
+#This is the standard json response of a song
     def json_response(self):
         
         return {
@@ -34,9 +32,9 @@ class Song(Model):
             'Love':self.Love,
             'Calm':self.Calm,
             'Energetic':self.Energetic
-            # 'streams': self.spotify_streams, 
         }
-    
+
+#this is the model of the leaderboard
     def leaderboard(self):
 
         return {
@@ -48,18 +46,19 @@ class Song(Model):
             'description':self.description
         }
 
+#this is the model that allows users to increase the amount of likes
     def increase_likes(self):
         self.likes += 1
         self.save()
-           
+#this is the model that allows users to increase the amount of dislikes 
     def increase_dislikes(self):
         self.dislikes += 1
         self.save()
-
+#This model allows users to change the description of a song
     def change_description(self, new_description):
         self.description = new_description
         self.save()
-
+#this is the model that allows users to change the mood of a song
     def change_mood(self, new_Happy, new_Sad, new_Angry, new_Love, new_Calm, new_Energetic):
 
         self.Happy = new_Happy
